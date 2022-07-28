@@ -1,5 +1,6 @@
 package bonus.promotion.engine;
 
+import bonus.promotion.engine.model.BoardZone;
 import bonus.promotion.engine.model.BonusPlayResult;
 import bonus.promotion.engine.model.PlayerChoice;
 
@@ -13,23 +14,34 @@ public class BonusDropEngineImpl implements BonusDropEngine {
 
     private int totalBudget;
 
+    private BoardZone boardZone;
+
     @Override
-    public void setTotalBudget(int money) {
-        totalBudget = money;
+    public void setTotalBudget(int totalBudget) {
+        this.totalBudget = totalBudget;
+    }
+
+    @Override
+    public void setBoardZone(BoardZone boardZone) {
+        this.boardZone = boardZone;
     }
 
     @Override
     public BonusPlayResult calculateBonus(PlayerChoice playerChoice) {
+        if (boardZone == null) {
+            throw new IllegalStateException("Border zone should be set first!");
+        }
+
         BonusPlayResult result = new BonusPlayResult();
         switch (playerChoice.getButtonSide()) {
             case LEFT:
-                result.setEarnedResult(parseBonusValue(getBorerZoneBonusMap(LEFT).get(playerChoice.getBoardZone())));
+                result.setEarnedResult(parseBonusValue(getBorerZoneBonusMap(LEFT).get(boardZone)));
                 break;
             case MIDDLE:
-                result.setEarnedResult(parseBonusValue(getBorerZoneBonusMap(MIDDLE).get(playerChoice.getBoardZone())));
+                result.setEarnedResult(parseBonusValue(getBorerZoneBonusMap(MIDDLE).get(boardZone)));
                 break;
             case RIGHT:
-                result.setEarnedResult(parseBonusValue(getBorerZoneBonusMap(RIGHT).get(playerChoice.getBoardZone())));
+                result.setEarnedResult(parseBonusValue(getBorerZoneBonusMap(RIGHT).get(boardZone)));
                 break;
             default:
                 throw new IllegalStateException("Unknown button sie=de");

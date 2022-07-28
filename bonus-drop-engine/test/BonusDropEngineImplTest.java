@@ -1,10 +1,10 @@
 import bonus.promotion.engine.BonusDropEngine;
 import bonus.promotion.engine.BonusDropEngineImpl;
+import bonus.promotion.engine.model.BoardZone;
 import bonus.promotion.engine.model.BonusPlayResult;
 import bonus.promotion.engine.model.PlayerChoice;
 import org.junit.jupiter.api.Assertions;
 
-import static bonus.promotion.engine.model.BoardZone.BONUS_FIRST;
 import static bonus.promotion.engine.model.ButtonSide.LEFT;
 
 class BonusDropEngineImplTest {
@@ -29,7 +29,8 @@ class BonusDropEngineImplTest {
     void shouldCalculateBonusResult() {
         BonusDropEngine bonusDropEngine = new BonusDropEngineImpl();
         bonusDropEngine.setTotalBudget(500);
-        BonusPlayResult actualResult = bonusDropEngine.calculateBonus(new PlayerChoice(LEFT, BONUS_FIRST));
+        bonusDropEngine.setBoardZone(BoardZone.BONUS_FIRST);
+        BonusPlayResult actualResult = bonusDropEngine.calculateBonus(new PlayerChoice(LEFT));
         Assertions.assertEquals(110, actualResult.getEarnedResult());
     }
 }
